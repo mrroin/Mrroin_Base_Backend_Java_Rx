@@ -1,0 +1,435 @@
+openapi: 3.0.1
+info:
+  title: Middleware Base
+  description: api that consumes Obj Pase services.
+  version: 0.2.0
+servers:
+  - url: 'https://api.dev.com'
+  - url: 'https://api.prod.com'
+paths:
+  /obj/pase/balance/{objId}:
+    get:
+      summary: Return the balance of the obj.
+      description:
+      operationId: getBalanceObjPase
+      x-vertx-event-bus: tecnojars.base
+      parameters:
+        - name: objId
+          in: path
+          description: Obj ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponse'
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Origin:
+              schema:
+                type: string
+        '500':
+          description: internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /obj/pase/status/{objId}:
+    get:
+      summary: Return the status of obj.
+      description:
+      operationId: getStatusObjPase
+      x-vertx-event-bus: tecnojars.base
+      parameters:
+        - name: objId
+          in: path
+          description: Obj ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponseStatusObj'
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Origin:
+              schema:
+                type: string
+        '500':
+          description: internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /obj/pase/existObj/{objId}:
+    get:
+      summary: Return the status of obj.
+      description:
+      operationId: geObjPase
+      x-vertx-event-bus: tecnojars.base
+      parameters:
+        - name: objId
+          in: path
+          description: Obj ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponse'
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Origin:
+              schema:
+                type: string
+        '500':
+          description: internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /obj/pase/objHistory:
+    get:
+      summary: Returns objPase operations list
+      description:
+      operationId: getHistoryObjPase
+      x-vertx-event-bus: tecnojars.base
+      parameters:
+        - in: query
+          name: objId
+          description: Obj ID
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: startDate
+          description: start date(in long) to filter the query
+          required: true
+          schema:
+            type: int64
+        - in: query
+          name: endDate
+          description: end date(in long) to filter the query
+          required: true
+          schema:
+            type: int64
+        - in: query
+          name: type
+          description: record type to filter the query
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponseHistoryObj'
+
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Origin:
+              schema:
+                type: string
+        '500':
+          description: internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /obj/pase/objRecharges:
+    get:
+      summary: Returns objPase recharges list
+      description:
+      operationId: getRechargesObjPase
+      x-vertx-event-bus: tecnojars.base
+      parameters:
+        - in: query
+          name: objId
+          description: Obj ID
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: startDate
+          description: start date(in long) to filter the query
+          required: true
+          schema:
+            type: int64
+        - in: query
+          name: endDate
+          description: end date(in long) to filter the query
+          required: true
+          schema:
+            type: int64
+        - in: query
+          name: type
+          description: record type to filter the query
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponseHistoryObj'
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Origin:
+              schema:
+                type: string
+        '500':
+          description: internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /obj/pase/healthcheck:
+    get:
+      summary: Health Check
+      operationId: healthCheck
+      x-vertx-event-bus: tecnojars.base
+      responses:
+        '200':
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponse'
+
+components:
+  schemas:
+    OperationResponse:
+      title: Operation response
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - BAD
+          description: status operation
+        code:
+          type: string
+          description: in case of error an error code will be returned
+        message:
+          type: string
+          description: detailed message of the operation
+      required:
+        - status
+    OperationResponseStatusObj:
+      title: Operation response with Obj Status
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - BAD
+          description: status operation
+        code:
+          type: string
+          description: in case of error an error code will be returned
+        message:
+          type: string
+          description: detailed message of the operation
+        data:
+          type: object
+          $ref: '#/components/schemas/StatusObj'
+          description: Specific status obj data
+    OperationResponseHistoryObj:
+      title: Operation response with Obj History
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - BAD
+          description: status operation
+        code:
+          type: string
+          description: in case of error an error code will be returned
+        message:
+          type: string
+          description: detailed message of the operation
+        data:
+          type: object
+          $ref: '#/components/schemas/RecordObj'
+          description: Specific status obj data
+    OperationResponse:
+      title: Operation response with Obj
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+            - BAD
+          description: status operation
+        code:
+          type: string
+          description: in case of error an error code will be returned
+        message:
+          type: string
+          description: detailed message of the operation
+        data:
+          type: object
+          $ref: '#/components/schemas/Obj'
+          description: Specific obj data
+    Obj:
+      title: Obj response
+      type: object
+      properties:
+        objId:
+          type: string
+          description: Obj ID
+        alias:
+          type: string
+          description: alias for Obj
+        balance:
+          type: double
+          description: Obj balance
+        paymentType:
+          type: integer
+          description: payment type for Obj
+      required:
+        - balance
+    RecordObj:
+      title: Record Obj response
+      type: object
+      properties:
+        carril:
+          type: string
+          description: carril
+        caseta:
+          type: string
+          description: caseta
+        clase:
+          type: integer
+          description: clase
+        ejes:
+          type: integer
+          description: ejes
+        fecha:
+          type: int64
+          description: fecha
+        monto:
+          type: double
+          description: monto
+        rodada:
+          type: integer
+          description: rodada
+        tipoMovimiento:
+          type: integer
+          description: tipoMovimiento
+        tramo:
+          type: string
+          description: tramo
+        folio:
+          type: string
+          description: folio
+        recorrido:
+          type: string
+          description: recorrido
+        fechaPago:
+          type: int64
+          description: fechaPago
+        nomcarril:
+          type: string
+          description: nomcarril
+    StatusObj:
+      title: Status Obj response
+      type: object
+      properties:
+        objId:
+          type: string
+          description: Obj ID
+        promotor:
+          type: string
+          description: promotor?
+        status:
+          type: string
+          description: obj status
+        motivo:
+          type: string
+          description: Obj status reason
+        numtar:
+          type: string
+          description: Obj card number
+      required:
+        - status
+    InternalErrorResponse:
+      title: error response
+      type: object
+      properties:
+        status:
+          type: string
+          description: status operation
+        message:
+          type: string
+          description: detailed message of the operation
+      required:
+        - status
